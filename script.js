@@ -11,18 +11,15 @@ Allow user input to change number of hr, min, and sec
 Button to add custom amounts of time to hr, min, sec? 
 */
 
-// Initialized starting times of the countdown (hrs, min, sec)
-let numberOfHours = 10;
-
 // Counts the number of seconds in the countdown
-let seconds = numberOfHours * 3600;
+let seconds = 3600 * 12;
 
 // Creates countdown variable that is linked to the ID "countdown" in html form
 const countdownEl = document.getElementById("countdown");
 
 // Makes updateCountdown loop every 1000 milliseconds (1 second)
 updateCountdown();
-setInterval(updateCountdown, 1000);
+let timerID = setInterval(updateCountdown, 1000);
 
 // Function that we use to update the countdown by decrementing 1 second
 
@@ -43,5 +40,30 @@ function updateCountdown() {
     secondsLeft = secondsLeft < 10 ? "0" + secondsLeft : secondsLeft;
 
     countdownEl.innerHTML = `${hours}:${minutes}:${secondsLeft}`;
+
+    if (seconds < 1) {
+        clearInterval(timerID);
+    }
     seconds--;
+}
+
+function restartCountdown() {
+    seconds = 0;
+    clearInterval(timerID);
+}
+
+function addSeconds() {
+    let addedSeconds = document.getElementById("add-seconds").value;
+    let addedMinutes = document.getElementById("add-minutes").value;
+    let addedHours = document.getElementById("add-hours").value;
+
+    minutesToSeconds = addedMinutes * 60;
+    hoursToSeconds = addedHours * 3600;
+
+    seconds = addedSeconds + minutesToSeconds + hoursToSeconds;
+    setInterval(updateCountdown, 1000);
+}
+
+function startCountdown() {
+    setInterval(updateCountdown, 1000);
 }
